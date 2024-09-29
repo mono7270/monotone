@@ -31,7 +31,6 @@ int main(int argc, char* argv[]) {
 
     quantity = argc - 1;
 
-    printf("通常再生モード\n");
     printf("Ctrl+Cでスキップできます。\n");
 
     for (i = 1; i <= quantity; i++) {
@@ -50,6 +49,7 @@ int main(int argc, char* argv[]) {
                 }
 
                 while (!Mix_PlayingMusic()) {
+                    playing = false;
                     break;
                 }
 
