@@ -1,8 +1,14 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
+#include <stdbool.h>
 #include <stdio.h>
 
 int main(int argc, char* argv[]) {
+    int i, quantity;
+    bool playing;
+    Mix_Music* music;
+    SDL_Event e;
+
     if (argc < 2) {
         printf("%sの使い方 : 音楽ファイルを引数に指定して下さい。\n", argv[0]);
 
@@ -23,19 +29,36 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    Mix_Music* music = Mix_LoadMUS(argv[1]);
+    quantity = argc - 1;
 
-    if (music == NULL) {
-        printf("ファイルを読み込めませんでした。\nSDL_mixer_Error : %s\n",
-               Mix_GetError());
+    printf("通常再生モード\n");
+    printf("Ctrl+Cでスキップできます。\n");
 
-        return 1;
-    }
+    for (i = 1; i <= quantity; i++) {
+        music = Mix_LoadMUS(argv[i]);
 
-    Mix_PlayMusic(music, 1);
+        if (music) {
+            playing = true;
+            Mix_PlayMusic(music, 1);
+            printf("%2d曲目\n", i);
 
-    while (Mix_PlayingMusic) {
-        SDL_Delay(100);
+            while (playing) {
+                while (SDL_PollEvent(&e) != 0) {
+                    if (e.type == SDL_QUIT) {
+                        playing = false;
+                    }
+                }
+
+                while (!Mix_PlayingMusic()) {
+                    break;
+                }
+
+                SDL_Delay(100);
+            }
+        } else {
+            printf("ファイルを読み込めませんでした。\nSDL_mixer_Error : %s\n",
+                   Mix_GetError());
+        }
     }
 
     Mix_FreeMusic(music);
