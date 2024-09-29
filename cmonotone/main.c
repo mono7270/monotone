@@ -2,21 +2,23 @@
 #include <SDL2/SDL_mixer.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <time.h>
 
 int GetRandom(int min, int max);
-void PlayMusic(Mix_Music* music, SDL_Event* e, bool* playing);
+void PlayMusic(Mix_Music* music, const char* argv, SDL_Event* e, bool* playing);
 
 int main(int argc, char* argv[]) {
     bool is_duplicate, playing;
-    char input[2];
+    char input[4];
     int c, i, j, quantity, selected_mode, shuffle;
     int* played_files;
-    Mix_Music* music;
+    Mix_Music* music = NULL;
     SDL_Event e;
 
     if (argc < 2) {
-        printf("%sの使い方 : 音楽ファイルを引数に指定して下さい。\n", argv[0]);
+        printf("%s の使い方 : 音楽ファイルを引数に指定して下さい。\n", argv[0]);
 
         return 1;
     }
@@ -28,7 +30,7 @@ int main(int argc, char* argv[]) {
     }
 
     if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
-        printf("SDL_mixer初期化失敗。SDL_mixer_Error : %s\n", SDL_GetError());
+        printf("SDL_mixer初期化失敗。SDL_mixer_Error : %s\n", Mix_GetError());
 
         return 1;
     }
@@ -52,11 +54,11 @@ int main(int argc, char* argv[]) {
                 selected_mode = atoi(input);
 
                 if (selected_mode != 1 && selected_mode != 2) {
-                    printf("1か2を入力して下さい。\n");
+                    printf("1 か 2 を入力して下さい。\n");
                 } else {
                     printf(selected_mode == 1 ? "通常再生モード\n"
                                               : "シャッフル再生モード\n");
-                    printf("Ctrl+Cでスキップ可能。");
+                    printf("Ctrl+C でスキップ可能。\n");
                     break;
                 }
             }
@@ -67,17 +69,8 @@ int main(int argc, char* argv[]) {
     switch (selected_mode) {
         case 1:
             for (i = 1; i <= quantity; i++) {
-                music = Mix_LoadMUS(argv[i]);
-
-                if (music) {
-                    playing = true;
-                    printf("%2d曲目\n", i);
-
-                    PlayMusic(music, &e, &playing);
-                } else {
-                    printf("読み込み失敗。\nSDL_mixer_Error : %s\n",
-                           Mix_GetError());
-                }
+                printf("%2d 曲目\n", i);
+                PlayMusic(music, argv[i], &e, &playing);
             }
 
             break;
@@ -85,12 +78,22 @@ int main(int argc, char* argv[]) {
         case 2:
             played_files = (int*)malloc(sizeof(int) * quantity);
 
+            if (played_files == NULL) {
+                printf("メモリの確保に失敗しました。\n");
+
+                return 1;
+            }
+
+            for (i = 0; i < quantity; i++) {
+                played_files[i] = -1;
+            }
+
             for (i = 1; i <= quantity; i++) {
                 while (1) {
                     is_duplicate = false;
                     shuffle = GetRandom(1, quantity);
 
-                    for (j = 0; j < i; j++) {
+                    for (j = 0; j < i - 1; j++) {
                         if (played_files[j] == shuffle) {
                             is_duplicate = true;
                             break;
@@ -102,17 +105,8 @@ int main(int argc, char* argv[]) {
                     }
                 }
 
-                music = Mix_LoadMUS(argv[shuffle]);
-
-                if (music) {
-                    playing = true;
-                    printf("%2d曲目、%2d番\n", i, shuffle);
-
-                    PlayMusic(music, &e, &playing);
-                } else {
-                    printf("読み込み失敗。\nSDL_mixer_Error : %s\n",
-                           Mix_GetError());
-                }
+                printf("%2d 曲目、%2d 番\n", i, shuffle);
+                PlayMusic(music, argv[shuffle], &e, &playing);
 
                 played_files[i - 1] = shuffle;
             }
@@ -125,7 +119,11 @@ int main(int argc, char* argv[]) {
             break;
     }
 
-    Mix_FreeMusic(music);
+    if (music != NULL) {
+        Mix_FreeMusic(music);
+        music = NULL;
+    }
+
     Mix_CloseAudio();
     SDL_Quit();
 
@@ -134,16 +132,30 @@ int main(int argc, char* argv[]) {
 
 int GetRandom(int min, int max) { return (rand() % (max - min + 1)) + min; }
 
-void PlayMusic(Mix_Music* music, SDL_Event* e, bool* playing) {
-    Mix_PlayMusic(music, 1);
+void PlayMusic(Mix_Music* music, const char* argv, SDL_Event* e,
+               bool* playing) {
+    music = Mix_LoadMUS(argv);
 
-    while (*playing) {
-        while (SDL_PollEvent(e) != 0) {
-            if (e->type == SDL_QUIT) {
+    if (music) {
+        *playing = true;
+        Mix_PlayMusic(music, 1);
+
+        while (*playing) {
+            while (SDL_PollEvent(e) != 0) {
+                if (e->type == SDL_QUIT) {
+                    *playing = false;
+                }
+            }
+
+            if (!Mix_PlayingMusic()) {
                 *playing = false;
             }
+
+            SDL_Delay(100);
         }
 
-        SDL_Delay(100);
+        Mix_FreeMusic(music);
+    } else {
+        printf("読み込み失敗。\nSDL_mixer_Error : %s\n", Mix_GetError());
     }
 }

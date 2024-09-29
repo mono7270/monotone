@@ -1,0 +1,3 @@
+/home/mono/my_works/monotone/cmonotone/build/CMakeFiles/cmonotone.dir
+/home/mono/my_works/monotone/cmonotone/build/CMakeFiles/edit_cache.dir
+/home/mono/my_works/monotone/cmonotone/build/CMakeFiles/rebuild_cache.dir
