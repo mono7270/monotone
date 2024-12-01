@@ -1,1 +1,1 @@
-/usr/bin/cc CMakeFiles/cmonotone.dir/main.c.o -o cmonotone  /usr/lib/x86_64-linux-gnu/libSDL2.so /usr/lib/x86_64-linux-gnu/libSDL2_mixer.so 
+/usr/bin/c89-gcc -g CMakeFiles/cmonotone.dir/main.c.o -o cmonotone  /usr/lib/x86_64-linux-gnu/libSDL2.so /usr/lib/x86_64-linux-gnu/libSDL2_mixer.so 

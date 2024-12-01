@@ -6,7 +6,7 @@
 			[
 				{
 					"build" : ".",
-					"jsonFile" : "directory-.-f5ebdc15457944623624.json",
+					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
 					"minimumCMakeVersion" : 
 					{
 						"string" : "3.28.3"
@@ -19,7 +19,7 @@
 					]
 				}
 			],
-			"name" : "",
+			"name" : "Debug",
 			"projects" : 
 			[
 				{
@@ -39,7 +39,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "cmonotone::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-cmonotone-1daacba31cdbe41eeb73.json",
+					"jsonFile" : "target-cmonotone-Debug-1e1eae8cb68c50a22ed7.json",
 					"name" : "cmonotone",
 					"projectIndex" : 0
 				}

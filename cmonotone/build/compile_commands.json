@@ -1,0 +1,8 @@
+[
+{
+  "directory": "/home/mono/my_works/monotone/cmonotone/build",
+  "command": "/usr/bin/c89-gcc  -isystem /usr/include/SDL2 -g -std=c17 -o CMakeFiles/cmonotone.dir/main.c.o -c /home/mono/my_works/monotone/cmonotone/main.c",
+  "file": "/home/mono/my_works/monotone/cmonotone/main.c",
+  "output": "CMakeFiles/cmonotone.dir/main.c.o"
+}
+]

@@ -1,0 +1,1 @@
+/usr/bin/cc CMakeFiles/monotone.dir/main.c.o -o monotone  /usr/lib/x86_64-linux-gnu/libSDL2.so 

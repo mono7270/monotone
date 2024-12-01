@@ -1,5 +1,5 @@
-CMakeFiles/cmonotone.dir/main.c.o: \
- /home/mono/my_works/monotone/cmonotone/main.c /usr/include/stdc-predef.h \
+CMakeFiles/monotone.dir/main.c.o: \
+ /home/mono/my_works/monotone/monotone/main.c /usr/include/stdc-predef.h \
  /usr/include/SDL2/SDL.h /usr/include/SDL2/SDL_main.h \
  /usr/include/SDL2/SDL_stdinc.h /usr/include/SDL2/SDL_config.h \
  /usr/include/x86_64-linux-gnu/SDL2/_real_SDL_config.h \
@@ -186,8 +186,5 @@ CMakeFiles/cmonotone.dir/main.c.o: \
  /usr/include/SDL2/SDL_render.h /usr/include/SDL2/SDL_shape.h \
  /usr/include/SDL2/SDL_system.h /usr/include/SDL2/SDL_timer.h \
  /usr/include/SDL2/SDL_version.h /usr/include/SDL2/SDL_locale.h \
- /usr/include/SDL2/SDL_misc.h /usr/include/SDL2/SDL_mixer.h \
- /usr/lib/gcc/x86_64-linux-gnu/13/include/stdbool.h /usr/include/time.h \
- /usr/include/x86_64-linux-gnu/bits/time.h \
- /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
- /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h
+ /usr/include/SDL2/SDL_misc.h \
+ /usr/lib/gcc/x86_64-linux-gnu/13/include/stdbool.h
